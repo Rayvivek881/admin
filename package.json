@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon src/index.js"
-  },
+    "test": "nodemon src/server.js"
+  }, 
   "repository": {
     "type": "git",
     "url": "rayvivek881"
