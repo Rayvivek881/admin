@@ -1,27 +1,30 @@
 require('dotenv').config();
 const express = require('express');
-const app = express(), PORT = 8080;
-const cors = require('cors');
-var mysql = require('mysql');
+const app = express(), PORT = process.env.PORT | 8080;
+const cors = require('cors'), mysql = require('mysql');
+
 
 // database connection
 var database = mysql.createConnection({
-    host: process.env.host,
-    port: process.env.port,
-    user: process.env.user,
-    password: process.env.password
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database : process.env.DB_DATABASE
 });
 database.connect(function (err) {
     if (err == null) {
-        this.database = database;
+        global.database = database, global.message = "working"
         console.log("database connection successful........");
     } else console.log("database not connected", err);
 })
+
 
 //middleware
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cors());
+
 
 // Routers
 app.use('/api/user', require('./routes/user.js'));
