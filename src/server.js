@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const app = express(), PORT = process.env.PORT || 8080;
 const cors = require('cors'), mysql = require('mysql');
-const { connection } = require('./middleware/MySqlQuery.js')
+const { connection } = require('./db/MySqlQuery.js')
 
 // database connection
 connection().then((result) => console.log("database connection successful........"))

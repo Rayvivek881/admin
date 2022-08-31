@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const encryption = require('../middleware/encryption.js');
-const {query, connection} = require('./middleware/MySqlQuery.js')
+const { query } = require('../db/MySqlQuery.js')
 const createAdmin = async (req, res) => {
     try {
         const { username, password, name } = req.body;

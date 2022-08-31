@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-const {query, connection} = require('./middleware/MySqlQuery.js')
+const { query } = require('../db/MySqlQuery.js')
 const createUser = async (req, res) => {
     try {
         const { name, email, mobile, message } = req.body;
