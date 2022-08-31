@@ -28,8 +28,10 @@ const AdminLogin = async (req, res) => {
         const result = await query(sql);
         if (result.length != 0)
             return res.status(400).json({msg : "username is not found"});
+
         if (encryption(password) != result.password)
             return res.status(400).json({msg : "wrong password"});
+
         const token = await jwt.sign({username : username}, process.env.JWT_TOKEN, {
             expiresIn: '3h',
         });
@@ -41,7 +43,12 @@ const AdminLogin = async (req, res) => {
 
 const insertJob = async (req, res) => {
     try {
-
+        const { title, location, tag, exp_level, link } = req.body;
+        const newid = crypto.randomBytes(10).toString('hex');
+        let sql = `INSERT INTO Jobs (title, location, tag, exp_level, link, id)
+            VALUES ('${title}', '${location}', '${tag}', '${exp_level}', '${link}', '${newid}')`;
+        await query(sql);
+        res.status(200).json({msg : "new Job got inserted"});
     } catch (err) {
         res.status(400).json({msg : "we got some error", ...err});
     }
@@ -49,7 +56,14 @@ const insertJob = async (req, res) => {
 
 const deleteJob = async (req, res) => {
     try {
-
+        const { id } = req.query;
+        let sql = `SELECT id FROM Jobs WHERE id = '${id}'`;
+        const result = await query(sql);
+        if (result.length == 0)
+            return res.status(400).json({msg : "data not found"});
+        sql = `DELETE FROM Jobs WHERE id = '${id}'`;
+        await query(sql);
+        res.status(200).json({msg : "Job got deleted"});
     } catch (err) {
         res.status(400).json({msg : "we got some error", ...err});
     }
@@ -57,7 +71,10 @@ const deleteJob = async (req, res) => {
 
 const getJobs = async (req, res) => {
     try {
-
+        const {page_no, max_len, tag} = req.query;
+        let sql = `SELECT * FROM Jobs LIMIT ${max_len} OFFSET ${(page_no - 1) * max_len} WHERE tag = '${tag}'`;
+        const result = await query(sql);
+        res.status(200).json([...result]);
     } catch (err) {
         res.status(400).json({msg : "we got some error", ...err});
     }
