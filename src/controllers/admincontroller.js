@@ -61,7 +61,7 @@ const insertJob = async (req, res) => {
   * 
   * @param {*} req 
   * @param {*} res 
-  * @returns 
+  * @link 
   */
 const deleteJob = async (req, res) => {
     try {
