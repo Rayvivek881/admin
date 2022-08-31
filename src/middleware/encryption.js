@@ -7,4 +7,4 @@ const encryption = (password) => {
     return hashpass;
 }
 
-module.exports = encryption;
+module.exports = encryption; 

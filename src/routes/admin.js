@@ -9,7 +9,7 @@ Router.route('/adminLogin').post(AdminLogin);
 Router.route('/Job')
     .post(authentication, insertJob)
     .delete(authentication, deleteJob)
-    .get(authentication, getJobs);
+    .get(getJobs);
 
 
 module.exports = Router;

@@ -1,14 +1,15 @@
 const mysql = require('mysql');
+const {query, connection} = require('./middleware/MySqlQuery.js')
 const createUser = async (req, res) => {
     try {
         const { name, email, mobile, message } = req.body;
-        let sql = `INSERT INTO User (name, email, message, mobile)
-                VALUES ('${name}', '${email}', '${message}', '${mobile}')`
-        database.query(sql, function (err) {
-            if (err != null)
-                return res.status(400).json({msg : "we got some error", ...err});
-            res.status(200).json({msg : "data successfully created"});
-        });
+        let sql = `SELECT * FROM User WHERE mobile = '${mobile}'`;
+        if ((await query(sql)).length != 0)
+            return res.status(400).json({msg : "moblie is ready resistered"})
+        sql = `INSERT INTO User (name, email, message, mobile)
+                VALUES ('${name}', '${email}', '${message}', '${mobile}')`;
+        await query(sql);
+        res.status(200).json({msg : "data successfully created"});
     } catch (err) {
         res.status(400).json({msg : "we got some error", ...err});
     }
@@ -17,11 +18,8 @@ const createUser = async (req, res) => {
 const getUser = async (req, res) => {
     try {
         let sql = `SELECT * FROM User`
-        database.query(sql, function (err, results) {
-            if (err != null)
-                return res.status(400).json({msg : "we got some error", ...err});
-            res.status(200).json({users : [...results]});
-        });
+        const result = await query(sql);
+        res.status(200).json({users : [...result]});
     } catch (err) {
         res.status(400).json({msg : "we got some error", ...err});
     }
@@ -30,12 +28,12 @@ const getUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     try {
         const { mobile }  = req.body;
-        let sql = `DELETE FROM User WHERE mobile = ${mobile}`;
-        database.query(sql, function (err) {
-            if (err != null)
-                return res.status(400).json({msg : "we got some error", ...err});
-            res.status(200).json({msg : "data successfully deleted"});
-        });
+        let sql = `SELECT * FROM User WHERE mobile = '${mobile}'`;
+        if ((await query(sql)).length == 0)
+            return res.status(400).json({msg : "user not find"})
+        sql = `DELETE FROM User WHERE mobile = ${mobile}`;
+        await query(sql);
+        res.status(200).json({msg : "data successfully deleted"});
     } catch (err) {
         res.status(400).json({msg : "we got some error", ...err});
     }
