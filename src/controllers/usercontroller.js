@@ -1,10 +1,11 @@
 const mysql = require('mysql');
 const { query } = require('../db/MySqlQuery.js')
+
 const createUser = async (req, res) => {
     try {
         const { name, email, mobile, message } = req.body;
 
-        let sql = `SELECT * FROM User WHERE mobile = '${mobile}'`;
+        let sql = `SELECT mobile FROM User WHERE mobile = '${mobile}'`;
         if ((await query(sql)).length != 0)
             return res.status(400).json({msg : "moblie is already resistered"})
 
