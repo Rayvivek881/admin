@@ -1,6 +1,11 @@
 const mysql = require('mysql');
 const { query } = require('../db/MySqlQuery.js')
 
+/**
+ * @method POST
+ * @link http://localhost:8000/api/user/create
+ */
+
 const createUser = async (req, res) => {
     try {
         const { name, email, mobile, message } = req.body;
@@ -19,6 +24,11 @@ const createUser = async (req, res) => {
     }
 }
 
+/**
+ * @method GET
+ * @link http://localhost:8000/api/user/get
+ */
+
 const getUser = async (req, res) => {
     try {
         let sql = `SELECT * FROM User`
@@ -28,6 +38,11 @@ const getUser = async (req, res) => {
         res.status(400).json({msg : "we got some error", ...err});
     }
 }
+
+/**
+ * @method DELETE
+ * @link http://localhost:8000/api/user/delete
+ */
 
 const deleteUser = async (req, res) => {
     try {

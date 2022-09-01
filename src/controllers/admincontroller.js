@@ -2,6 +2,12 @@ const jwt = require('jsonwebtoken');
 const encryption = require('../middleware/encryption.js');
 const crypto = require('crypto')
 const { query } = require('../db/MySqlQuery.js')
+
+/**
+ * @method POST
+ * @link http://localhost:8000/admin/createAdmin
+ */
+
 const createAdmin = async (req, res) => {
     try {
         const { username, password, name } = req.body;
@@ -21,6 +27,11 @@ const createAdmin = async (req, res) => {
         res.status(400).json({msg : "we got some error", ...err});
     }
 }
+
+/**
+ * @method POST
+ * @link http://localhost:8000/admin/adminLogin
+ */
 
 const AdminLogin = async (req, res) => {
     try {
@@ -42,6 +53,11 @@ const AdminLogin = async (req, res) => {
     }
 }
 
+/**
+ * @method POST
+ * @link http://localhost:8000/admin/Job
+ */
+
 const insertJob = async (req, res) => {
     try {
         const { title, location, tag, exp_level, link } = req.body;
@@ -57,12 +73,12 @@ const insertJob = async (req, res) => {
         res.status(400).json({msg : "we got some error"});
     }
 }
+
  /**
-  * 
-  * @param {*} req 
-  * @param {*} res 
-  * @link 
-  */
+ * @method DELETE
+ * @link http://localhost:8000/admin/Job
+ */
+
 const deleteJob = async (req, res) => {
     try {
         const { id } = req.query;
@@ -80,6 +96,11 @@ const deleteJob = async (req, res) => {
         res.status(400).json({msg : "we got some error", ...err});
     }
 }
+
+ /**
+ * @method GET
+ * @link http://localhost:8000/admin/Job
+ */
 
 const getJobs = async (req, res) => {
     try {
